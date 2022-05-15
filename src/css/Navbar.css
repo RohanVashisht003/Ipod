@@ -1,0 +1,40 @@
+.bar{
+    margin-top: -2px;
+    display: flex;
+    width: 270px;
+    height: 22px;
+    min-height: 20px;
+    background-color: #E3F2FD;
+    border-bottom: 1px solid black;
+    /* position: absolute; */
+}
+
+.heading{
+    margin: 1px 5px;
+    padding: 0px;
+    align-items: center;
+    display: flex;
+}
+
+.time{
+    margin: 0px;
+    padding: 0px;
+    margin: auto;
+}
+
+.battery{
+    width: 22px;
+    height: 20px;
+    margin: 1px;
+}
+
+.right-nav-container{
+    display: flex;
+    flex-direction: row;
+    margin-left: 15px;
+}
+
+.play-pause-nav{
+    color: orangered;
+}
+

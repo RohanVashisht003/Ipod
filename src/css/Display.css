@@ -1,0 +1,27 @@
+.display{
+    background-size: cover;
+    background-position: center;
+    width: 270px;
+    height: 50%;
+    margin-top: 25px;
+    border: 2.5px solid rgb(3, 3, 3);
+    padding:3px 0px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.blank-div{
+    width: 270px;
+    height: 100%;
+    background-color: #E3F2FD;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.empty-text{
+    margin: 5px;
+    text-align: center;
+}
