@@ -57,7 +57,7 @@ function Navbar(props) {
       {noty===false && <h5 className='time'>{currentTime}</h5>}
       {<div className="right-nav-container">
           {playing ? <h5 className='play-pause-nav'><PlayArrowIcon></PlayArrowIcon></h5>:
-           <h5 className='play-pause-nav'><PauseIcon></PauseIcon></h5>}
+           <h5 className='play-pause-nav'><PauseIcon style={{fontSize:13, marginTop:5}}></PauseIcon></h5>}
           <img className="battery" src={battery} alt="Battery"/>
       </div>}
     </div>

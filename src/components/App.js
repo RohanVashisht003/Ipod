@@ -29,7 +29,7 @@ function App() {
   const[active, setActive] = useState(0);
 
   const[menuItems] = useState([
-                            "Now Playing","Music","Games", "Setting"
+                            "Now Playing","Music","Games", "Settings"
                               ]);
 
   const[musicItems] = useState([
@@ -86,7 +86,8 @@ function App() {
     if(playing === false){
       return;
     }
-    console.log(event.detail.interval)
+    console.log(event.detail.interval);
+
     if(event.detail.interval<250){
       audio.pause();
       let songIndex = songIndexx;
@@ -123,6 +124,9 @@ function App() {
 
   // Fast Backward
   const fastBackward = (event)=>{
+    if(currentMenu === -2){
+      return;
+    }
     if(playing===false){
       return;
     }
@@ -146,7 +150,7 @@ function App() {
         setAudio(new Audio(songUrl));
           audio.play();
       }
-    else if(event.detail.interval>250 && event.detil.interval<1000){
+    else if(event.detail.interval>250 && event.detail.interval<1000){
       const interval = event.detail.interval/100;
       setAudio((prevState)=>{
         prevState.audio.currentTime -= interval;

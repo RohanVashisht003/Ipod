@@ -9,6 +9,8 @@ import Settings from '../components/Settings';
 import WheelColor from '../components/WheelColor';
 import Playing from '../components/Playing';
 import Themes from '../components/Themes'
+import LockScreen from './LockScreen';
+
 
 function Display(props) {
   const { active, menuItems, musicItems,songItems, playing, songIndex, audio, songUrl ,songImgUrl,wallpaper,wallpaperItems, noty,notifyText, settingNoty, currentMenu} = props;
@@ -17,7 +19,7 @@ function Display(props) {
         <Navbar
         noty={noty} playing={playing} notifyText={notifyText} settingNoty={settingNoty}
         />
-
+        {currentMenu === -2 && <LockScreen/>}
         {currentMenu === -1 && <Menu songImgUrl={songImgUrl} menuItems={menuItems} active={active} />}
 
         {currentMenu === 1 && <Music musicItems={musicItems} active={active} />}

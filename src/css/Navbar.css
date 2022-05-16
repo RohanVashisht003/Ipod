@@ -36,5 +36,16 @@
 
 .play-pause-nav{
     color: orangered;
+    margin: 0px;
+    margin-right: 8px;
+    padding: 0px;
+    text-align: center;
+}
+
+.notification{
+    color: black;
+    text-align: center;
+    margin: auto;
+
 }
 
