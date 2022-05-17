@@ -265,14 +265,14 @@ function App() {
     return;
   }
 
-  const changeSongFromMenu=(id, navigationArrayy)=>{
+  const changeSongFromMenu=(id, localNavigationArray)=>{
     const songUrl = songItemsUrl[id];
     const songImgUrl = songImgItemsUrl[id];
-    this.state.audio.pause();
+      audio.pause();
 
       setCurrentMenu(7);
       setSongUrl(songUrl);
-      setNavigationArrayy(navigationArrayy);
+      setNavigationArrayy(localNavigationArray);
       setActive(0);
       setPlaying(true);
       setSongIndexx(id);
@@ -281,17 +281,18 @@ function App() {
         audio.play();
     return;
   }
-  const menuChangeBackward = ()=>{
-    const navigationArray = navigationArrayy.slice();
+    const menuChangeBackward = ()=>{
+    const localNavigationArray = navigationArrayy.slice();
+    
     if(currentMenu===-2){
       return;
     }
     else{
-      const prevId = navigationArray.pop();
+      const prevId = localNavigationArray.pop();
   
         setCurrentMenu(prevId);
+        setNavigationArrayy(localNavigationArray);
         setActive(0);
-        setNavigationArrayy(navigationArray);
         return;
 
     }
@@ -299,27 +300,27 @@ function App() {
 
   const menuChangeForward = (id, from)=>{
     console.log("menuChangeForward");
-    const navigationArray = navigationArrayy.slice();
-
+    const localNavigationArray = navigationArrayy.slice();
+    
     if (from !== -2 && from !== -1 && from !== 1 && from !== 4 && from !== 3 && from !== 8 && from !== 9 && from !== 0 && from !== 7 &&from !== 10) {
       return;
     }
 
     if(from===-2){
-      navigationArray.push(currentMenu);
+      localNavigationArray.push(currentMenu);
     
         setCurrentMenu(-1);
-        setNavigationArrayy(navigationArray);
+        setNavigationArrayy(localNavigationArray);
         setActive(0);
         return;
   
     }
 
     if(from===-1){
-      navigationArray.push(currentMenu);
+      localNavigationArray.push(currentMenu);
    
         setCurrentMenu(id);
-        setNavigationArrayy(navigationArray);
+        setNavigationArrayy(localNavigationArray);
         setActive(0);
         return;
     }
@@ -344,16 +345,16 @@ function App() {
       return;
     }
 
-    navigationArray.push(currentMenu);
+    localNavigationArray.push(currentMenu);
     if(from===4){
-      changeSongFromMenu(id, navigationArray, from);
+      changeSongFromMenu(id, localNavigationArray, from);
       return;
     }
 
     const currentMenuId = menuMapping[from][id];
 
       setCurrentMenu(currentMenuId);
-      setNavigationArrayy(navigationArray);
+      setNavigationArrayy(localNavigationArray);
       setActive(0);
 
   }
