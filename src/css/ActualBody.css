@@ -9,6 +9,7 @@
     align-items: center;
     box-shadow: inset 0 0 20px 3px black;
     -webkit-box-reflect: below 8px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent) , to(rgba(250, 250, 250, 0.1)));
+    transition: all 0.4s;
 }
 
 #rotate-btn{
@@ -27,6 +28,7 @@
 
 .rotate-clockwise
 {
+    transition: all 0.2s;   
     transform: rotateZ(90deg);
 }
 
