@@ -1,7 +1,7 @@
 {
   "name": "ipod",
   "version": "0.1.0",
-  "homepage":"https://RohanVashisht003.github.io/Ipod",
+  "homepage": "https://RohanVashisht003.github.io/Ipod",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.8.2",
