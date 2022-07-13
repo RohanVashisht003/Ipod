@@ -1,246 +1,304 @@
+import React from 'react';
 import '../css/App.css';
-import { useState } from 'react';
-import Case from './Case.js';
+import ActualBody from './ActualBody.js';
 
 
 // Importing Songs
-import song1 from '../static/songs/Dharia.mp3';
+import song1 from '../static/songs/HarHarShambhuShivMahadeva.mp3';
 import song2 from '../static/songs/Fearless.mp3';
-import song3 from '../static/songs/ShapeofYou.mp3';
-import song4 from '../static/songs/InTheEnd.mp3';
+import song3 from '../static/songs/InTheEnd.mp3';
+import song4 from '../static/songs/ShapeofYou.mp3';
+import song5 from '../static/songs/Dhokha.mp3';
+import song6 from '../static/songs/MastNazronSe.mp3';
+import song7 from '../static/songs/MeriZindagiHaiTu.mp3';
+import song8 from '../static/songs/Stay.mp3';
+
 
 // Importing Song Images
-import song1Img from '../static/images/dhariaImg.jfif';
+import song1Img from '../static/images/harharshiv.jpg';
 import song2Img from '../static/images/fearless.jpg';
 import song3Img from '../static/images/in the end.jpg';
 import song4Img from '../static/images/shape of you.png';
+import song5Img from '../static/images/dhokha.jpg';
+import song6Img from '../static/images/mastnazro.jpg';
+import song7Img from '../static/images/meri.jpg';
+import song8Img from '../static/images/stay.jpg';
 
 // Importing Wallpapers
 import Wallpaper1 from "../static/images/wallpaper1.jpg";
-import Wallpaper2 from '../static/images/wallpaper2.jpg';
-import Wallpaper3 from '../static/images/wallpaper3.png';
-import Wallpaper4 from '../static/images/wallpaper4.jfif';
+import Wallpaper2 from '../static/images/wallpaper2.png';
+import Wallpaper3 from '../static/images/wallpaper3.jfif';
 
 
 
 
-function App() {
+class App extends React.Component {
+  constructor() {
+    super();
+    // setting states of different attributes
+    this.state = {
+      active: 0,
+      // main menu items
+      menuItems: ["Now Playing", "Music", "Games", "Settings"],
+      // music menu items
+      musicItems: ["All Songs", "Artist", "Albums"], 
+      //songs list
+      songItemsUrl: [song1, song2, song3, song4,song5,song6,song7,song8], 
+      //songs images list
+      songImgItemsUrl: [song1Img, song2Img, song3Img, song4Img,song5Img,song6Img,song7Img,song8Img], 
+      //wallpapers
+      wallpaperItems: [Wallpaper1, Wallpaper2, Wallpaper3], 
+      // songs names
+      songItems: ["Har Har Shambhu Shiv Mahadeva", "Fearless", "In The End", "Shape Of You","Dhokha","Mast Nazron Se","Meri Zindagi Hai Tu","Stay"], 
+      // current song by default
+      songIndex: 0,
 
-  const[active, setActive] = useState(0);
+      // mapping menu keys
+      lengthMenuKey: {
+        "-1": 3,
+        1: 2,
+        4: 7,
+        8: 4,
+        3: 2,
+        9: 2,
+        10: 2
+      }, 
+      menuMapping: {
+        "-1": [0, 1, 2, 3],
+        1: [4, 5, 6],
+        3: [8, 9, 10]
+      }, 
+      //current menu which is lockscreen
+      currentMenu: -2, 
+       //Used for navigating forward and backward
+      navigationStack: [],
+      //current song url
+      songUrl: song1, 
+      //playing or not
+      playing: false, 
+      //current theme
+      theme: "rgb(210, 210, 210)", 
+      //current audio file
+      audio: new Audio(song1), 
+      //playing song image
+      songImgUrl: song1Img, 
+      //current wheel color
+      wheelColor: "white", 
+      //current wallpaper
+      wallpaper: 0, 
+      //to show notification or not
+      noty: false, 
+      //wallpaper changed notification text
+      notifyText: "Wallpaper Changed", 
+    }
+  }
 
-  const[menuItems] = useState([
-                            "Now Playing","Music","Games", "Settings"
-                              ]);
-
-  const[musicItems] = useState([
-                                "All Songs", "Artist", "Albums"
-                              ]);
-
-  const [songImgItemsUrl] = useState([song1Img, song2Img,song3Img, song4Img]);
-
-  const[songItemsUrl]=useState([song1, song2, song3, song4]);
-
-  const [wallpaperItems] = useState([Wallpaper1, Wallpaper2, Wallpaper3, Wallpaper4
-  ]);
-
-  const [songItems] = useState(["Dharia","Fearless","In TheEnd","ShapeofYou"]);
-
-  const[songIndexx, setSongIndexx] = useState(0);
-
-  const [songImgUrl, setSongImgUrl] = useState(song1Img);
-
-  const[playing, setPlaying] = useState(false);
-
-  const[noty, setNoty] = useState(false);
-
-  const[notifyText, setNotifyText] = useState("Wallpaper Changed");
-
-  const [navigationArrayy, setNavigationArrayy] = useState([]);
-
-  const[theme, setTheme] = useState('rgb(210,210,210)');
-
-  const [wallpaper, setWallpaper] = useState(0);
-
-  const[songUrl, setSongUrl] = useState(song1);
-
-  const [audio, setAudio] = useState(new Audio(song1));
-
-  const [wheelColor, setWheelColor] = useState('white');
-
-  const [currentMenu, setCurrentMenu] = useState(-2);
-
-  const [lengthMenuKey] = useState({"-1":3, 1:2, 4:4, 8:4, 3:2, 9:3, 10:2});
-
-  const menuMapping = {"-1":[0,1,2,3],
-                          1:[4,5,6],
-                          3:[8,9,10]
-                      };
-
+  fastForward = (event) => {
+    // if lock do nothing
+    if (this.state.currentMenu === -2) {
+      return;
+    }
     
+    // for going to next
+    if (event.detail.interval < 250) {
+      this.state.audio.pause();
+      let songIndex = this.state.songIndex;
 
-  // ------------Fast Forward Function-------------------
-  const fastForward =(event)=>{
-    if(currentMenu===-2){
-      return;
-    }
-    if(playing === false){
-      return;
-    }
-    console.log(event.detail.interval);
-
-    if(event.detail.interval<250){
-      audio.pause();
-      let songIndex = songIndexx;
-
-      if(songIndex === songItemsUrl.length-1){
-        songIndex=0;
-      }
-      else{
+      if (songIndex === this.state.songItemsUrl.length - 1) {
+        songIndex = 0;
+      } else {
         songIndex++;
       }
 
-      const songUrl = songItemsUrl[songIndex];
-      const songImgUrl = songImgItemsUrl[songIndex];
+      const songUrl = this.state.songItemsUrl[songIndex];
+      const songImgUrl = this.state.songImgItemsUrl[songIndex];
 
-      // setting states
-        setSongIndexx(songIndex);
-        setSongUrl(songUrl);
-        setSongImgUrl(songImgUrl);
+      this.setState({
+        songIndex: songIndex,
+        songImgUrl: songImgUrl,
+        songUrl: songUrl,
+        audio: new Audio(songUrl)
+      }, () => {
+        this.state.audio.play();
+      });
 
-        setAudio(new Audio(songUrl))
-          audio.play();
-      }
-    else if(event.detail.interval >250 && event.detail.interval<1000){
-      const interval = event.detail.interval/100;
+    }
+    // fast forwarding song 
+    else if (event.detail.interval > 250 && event.detail.interval < 1000) {
+      const interval = event.detail.interval / 60;
 
-      // function for incrementing currentTime
-      setAudio(prevState=>{
+      this.setState((prevState) => {
+        prevState.audio.currentTime += interval;
+        return prevState;
+      })
+    }
+    else if(event.detail.interval >=1000 && event.detail.interval <2000){
+      const interval = event.detail.interval / 20;
+
+      this.setState((prevState) => {
         prevState.audio.currentTime += interval;
         return prevState;
       })
     }
   }
 
-
-  // Fast Backward
-  const fastBackward = (event)=>{
-    if(currentMenu === -2){
+  fastBackward = (event) => {
+     // if lock do nothing
+    if (this.state.currentMenu === -2) {
       return;
     }
-    if(playing===false){
-      return;
-    }
-    if(event.detail.interval<250){
-      audio.pause();
-      let songIndex = songIndexx;
-      if(songIndex===0){
-        songIndex = songItemsUrl.length-1;
-      }
-      else{
-        songIndex-=1;
+    
+     // for going to back
+    if (event.detail.interval < 250) {
+      this.state.audio.pause();
+      let songIndex = this.state.songIndex;
+      if (songIndex === 0) {
+        songIndex = this.state.songItemsUrl.length - 1;
+      } else {
+        songIndex -= 1;
       }
 
-      const songUrl = songItemsUrl[songIndex];
-      const songImgUrl = songImgItemsUrl[songIndex];
+      const songUrl = this.state.songItemsUrl[songIndex];
+      const songImgUrl = this.state.songImgItemsUrl[songIndex];
 
       // setting states
-        setSongIndexx(songIndex);
-        setSongImgUrl(songImgUrl);
-        setSongUrl(songUrl);
-        setAudio(new Audio(songUrl));
-          audio.play();
-      }
-    else if(event.detail.interval>250 && event.detail.interval<1000){
-      const interval = event.detail.interval/100;
-      setAudio((prevState)=>{
+      this.setState({
+        songIndex: songIndex,
+        songImgUrl: songImgUrl,
+        songUrl: songUrl,
+        audio: new Audio(songUrl)
+      }, () => {
+        this.state.audio.play();
+      });
+
+    }
+    // fast backward
+     else if (event.detail.interval > 250 && event.detail.interval < 1000) {
+      const interval = event.detail.interval / 100;
+      this.setState((prevState) => {
         prevState.audio.currentTime -= interval;
         return prevState;
       })
     }
-    }
-  
+    else if(event.detail.interval >=1000 && event.detail.interval <2000){
+      const interval = event.detail.interval / 20;
 
-  // play pause
-  const playPauseToggle = ()=>{
-    if(currentMenu===-2){
-      return;
-    }
-    if(playing===true){
-      setPlaying(false);
-      audio.pause();
-    }
-    else if(playing === false){
-      setPlaying(true);
-      audio.play();
+      this.setState((prevState) => {
+        prevState.audio.currentTime -= interval;
+        return prevState;
+      })
     }
   }
 
-  
-  //Updating  menu while rotating wheel
-  const updateMenu = (direction, menu)=>{
 
-    if(menu !== -1 && menu !== 1 && menu !== 4 && menu !== 8 && menu !== 3 && menu !== 9 && menu !== 10){
+  // play pause
+  playPauseToggle = () => {
+    // if on lockscreen do nothing
+    if (this.state.currentMenu === -2) {
       return;
     }
-    let min=0;
+    // if currently playing
+    if (this.state.playing === true) {
+      // then set state to pause
+      this.setState({
+        playing: false
+      });
+      // set audio to pause
+      this.state.audio.pause();
+    }
+    
+    else {
+      // otherwise set to play 
+      this.setState({
+        playing: true
+      });
+      this.state.audio.play();
+    }
+  }
+
+
+  //Updating menu
+  updateMenu = (direction, menu) => {
+
+    // if menu is not from the defined menu then return
+    if (menu !== -1 && menu !== 1 && menu !== 4 && menu !== 8 && menu !== 3 && menu !== 9 && menu !== 10) {
+      return;
+    }
+
+    let min = 0;
     let max = 0;
 
-    max = lengthMenuKey[menu];
+    // setting maximum possible value for a menu
+    max = this.state.lengthMenuKey[menu];
 
-    if(direction === 1){
-      if(active>=max){
-        setActive(min);
+    if (direction === 1) {
+      // if greater than or equals to max then set active to min
+      if (this.state.active >= max) {
+        this.setState({
+          active: min
+        })
       }
-      else{
-        setActive(active+1);
+      // otherwise increase active+1 
+      else {
+        this.setState({
+          active: this.state.active + 1
+        })
       }
     }
-    else{
-      if(active<=min){
-        setActive(max);
+    // is less than or equals to min then set active to max 
+    else {
+      if (this.state.active <= min) {
+        this.setState({
+          active: max
+        })
       }
-      else{
-        setActive(active-1);
+     // otherwise increase active-1
+      else {
+        this.setState({
+          active: this.state.active - 1
+        })
       }
     }
-  } 
+  }
 
+  //  Set Wallpaper
+  settingWallpaper = (id) => {
+    // setting the state on changing of wallpaper and showing notification
+    this.setState({
+      wallpaper: id,
+      noty: true,
+      notifyText: "Wallpaper Changed"
+    });
+    return;
 
-  // Set Wallpaper
-  const settingWallpaper = (id)=>{
-      setWallpaper(id);
-      setNoty(true);
-      setNotifyText("Wallpaper Changed");
-      return;
-  
   }
 
   // set theme of body
-  const settingTheme = (id)=>{
+  settingTheme = (id) => {
     let theme = "";
-    if(id===0){
-      theme='#f0f0f0'
-    }
-    else if (id === 1) {
-      theme= "#555d50" //black
+    if (id === 0) {
+      theme = "#f0f0f0";
+    } else if (id === 1) {
+      theme = "#555d50";
     } else if (id === 2) {
-      theme= "#ffcc00";
+      theme = "#ffcc00";
     } else if (id === 3) {
-      theme="#D1CDDA";
+      theme = "#D1CDDA";
 
     } else if (id === 4) {
-      theme="#c4aead"
+      theme = "#c4aead";
     }
-
-      setTheme(theme);
-      setNoty(true);
-      setNotifyText("Theme Changed");
-      return;
-
+     // setting the state on changing of theme and showing notification
+    this.setState({
+      theme: theme,
+      noty: true,
+      notifyText: "Theme Changed"
+    }) 
+    return;
   }
 
-  // set wheel color
-  const settingWheelColor = (id)=>{
+   // set wheel color
+  settingWheelColor = (id) => {
     let wheelColor ="";
     if (id === 0) {
       wheelColor= "#212121";
@@ -252,123 +310,154 @@ function App() {
     } else if (id === 3) {
       wheelColor= "#3D5AFE";
     }
-
-        setWheelColor(wheelColor);
-        setNoty(true);
-        setNotifyText("Wheel Color Changed");
-        return;
+    this.setState({ 
+      wheelColor: wheelColor, 
+      noty:true, 
+      notifyText:"Wheel Color Changed"
+    })
+    return;
 
   }
-  // set noty
-  const settingNoty = ()=>{
-    setNoty(false);
+  // set notification
+  settingNotification = () => {
+    this.setState({
+      noty: false
+    });
     return;
   }
 
-  const changeSongFromMenu=(id, localNavigationArray)=>{
-    const songUrl = songItemsUrl[id];
-    const songImgUrl = songImgItemsUrl[id];
-      audio.pause();
-
-      setCurrentMenu(7);
-      setSongUrl(songUrl);
-      setNavigationArrayy(localNavigationArray);
-      setActive(0);
-      setPlaying(true);
-      setSongIndexx(id);
-      setAudio(new Audio(songUrl));
-      setSongImgUrl(songImgUrl);
-        audio.play();
+  // change song from menu
+  changeSongFromMenu = (id, navigationStack) => {
+    // songUrl to play the song
+    const songUrl = this.state.songItemsUrl[id];
+    // songImage as well
+    const songImgUrl = this.state.songImgItemsUrl[id];
+    // pause the current playing song
+    this.state.audio.pause();
+    // set states
+    this.setState({
+      // show playing song screen
+      currentMenu: 7,
+      // set songUrl
+      songUrl: songUrl,
+      // update navigation array
+      navigationStack: navigationStack,
+      active: 0,
+      playing: true,
+      songIndex: id,
+      // set new audio
+      audio: new Audio(songUrl),
+      // set new image
+      songImgUrl: songImgUrl
+    }, 
+    // callback function to play audio
+    () => {
+      this.state.audio.play();
+    });
     return;
   }
-    const menuChangeBackward = ()=>{
-    const localNavigationArray = navigationArrayy.slice();
-    
-    if(currentMenu===-2){
+
+  // going back to previous menu
+  menuChangeBackward = () => {
+    // get the navigation array
+    const navigationStack = this.state.navigationStack.slice();
+    // if on lockscreen do nothing
+    if (this.state.currentMenu === -2) {
       return;
-    }
-    else{
-      const prevId = localNavigationArray.pop();
-  
-        setCurrentMenu(prevId);
-        setNavigationArrayy(localNavigationArray);
-        setActive(0);
-        return;
+    } 
+    // otherwise
+    else {
+      // pop the the last id
+      const prevId = navigationStack.pop();
+      // set new states
+      this.setState({
+        currentMenu: prevId,
+        navigationStack: navigationStack,
+        active: 0
+      });
+      return;
 
     }
   }
 
-  const menuChangeForward = (id, from)=>{
-    console.log("menuChangeForward");
-    const localNavigationArray = navigationArrayy.slice();
-    
-    if (from !== -2 && from !== -1 && from !== 1 && from !== 4 && from !== 3 && from !== 8 && from !== 9 && from !== 0 && from !== 7 &&from !== 10) {
+  // going to new menu 
+  menuChangeForward = (id, from) => {
+    // get the navigation array
+    const navigationStack = this.state.navigationStack.slice();
+// if menu is not from the defined menu then return
+    if (from !== -2 && from !== -1 && from !== 1 && from !== 4 && from !== 3 && from !== 8 && from !== 9 && from !== 0 && from !== 7 && from !== 10) {
       return;
     }
+// if from lockscreen then
+    if (from === -2) {
+      navigationStack.push(this.state.currentMenu);
+      this.setState({
+        // set main menu
+        currentMenu: -1,
+        navigationStack: navigationStack,
+        active: 0
+      });
+      return;
 
-    if(from===-2){
-      localNavigationArray.push(currentMenu);
-    
-        setCurrentMenu(-1);
-        setNavigationArrayy(localNavigationArray);
-        setActive(0);
-        return;
-  
     }
-
-    if(from===-1){
-      localNavigationArray.push(currentMenu);
-   
-        setCurrentMenu(id);
-        setNavigationArrayy(localNavigationArray);
-        setActive(0);
-        return;
-    }
-
-    if(from===7 || from===0){
-      playPauseToggle();
+// if from main menu then
+    if (from === -1) {
+      navigationStack.push(this.state.currentMenu);
+      this.setState({
+        // set id of selected menu
+        currentMenu: id,
+        navigationStack: navigationStack,
+        active: 0
+      });
       return;
     }
-
-    if(from===8){
-      settingTheme(id);
+// if from menu "0 or 7" then play or pause song
+    if (from === 7 || from === 0) {
+      this.playPauseToggle();
       return;
     }
-
-    if(from===9){
-      settingWheelColor(id);
+// if from theme menu then change the theme
+    if (from === 8) {
+      this.settingTheme(id);
       return;
     }
-
-    if(from===10){
-      settingWallpaper(id);
+// if from wheel color menu then change wheel color
+    if (from === 9) {
+      this.settingWheelColor(id);
       return;
     }
-
-    localNavigationArray.push(currentMenu);
-    if(from===4){
-      changeSongFromMenu(id, localNavigationArray, from);
+// if from wallpaper menu then change wallpaper
+    if (from === 10) {
+      this.settingWallpaper(id);
       return;
     }
-
-    const currentMenuId = menuMapping[from][id];
-
-      setCurrentMenu(currentMenuId);
-      setNavigationArrayy(localNavigationArray);
-      setActive(0);
+// also push the currentmenu id in navigation array
+    navigationStack.push(this.state.currentMenu);
+    // if from all songs menu then change song from menu
+    if (from === 4) {
+      this.changeSongFromMenu(id, navigationStack);
+      return;
+    }
+// get the current menu mapping
+    const currentMenuId = this.state.menuMapping[from][id];
+// update the states
+    this.setState({
+      currentMenu: currentMenuId,
+      navigationStack: navigationStack,
+      active: 0
+    });
 
   }
 
-  return (
-    <div className="App">
-      {/* case component */}
-      <Case theme={theme} songIndex = {songIndexx} menuItems={menuItems} musicItems = {musicItems} currentMenu = {currentMenu} updateMenu = {updateMenu}
-      playPauseToggle = {playPauseToggle} songItems = {songItems} playing = {playing} audio = {audio} songUrl = {songUrl} songImgUrl ={songImgUrl} fastForward = {fastForward} fastBackward= {fastBackward} wheelColor = {wheelColor} wallpaper = {wallpaper} wallpaperItems = {wallpaperItems} noty = {noty} notifyText = {notifyText} settingNoty={settingNoty} settingWheelColor = {settingWheelColor}
-      settingTheme = {settingTheme} settingWallpaper = {settingWallpaper} menuChangeBackward={menuChangeBackward} menuChangeForward = {menuChangeForward} active = {active}
-      
-      />
-    </div>
-  );
+  render(){
+      const {active, menuItems,musicItems,wallpaperItems,songItems,songIndex,currentMenu,songUrl,playing,theme,audio,songImgUrl,wheelColor,wallpaper,noty,notifyText} = this.state;
+      return (
+      <div className="App">
+      <ActualBody songIndex = {songIndex} active={active} menuItems = {menuItems} musicItems={musicItems} currentMenu={currentMenu} menuChangeBackward={this.menuChangeBackward} menuChangeForward = {this.menuChangeForward} updateMenu = {this.updateMenu} 
+      playPauseToggle = {this.playPauseToggle} songItems={songItems} playing = {playing} theme={theme} audio={audio} songUrl={songUrl} songImgUrl={songImgUrl} fastForward = {this.fastForward} fastBackward = {this.fastBackward} wheelColor={wheelColor} wallpaper={wallpaper} wallpaperItems={wallpaperItems} noty={noty} settingNotification={this.settingNotification} notifyText={notifyText}/>
+      </div>
+    );
+  }
 }
 
 export default App;

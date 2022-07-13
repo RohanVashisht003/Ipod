@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import '../css/Navbar.css';
-import battery from '../static/images/battery.png';
+// wifi icon
 import SignalWifi4BarLockIcon from '@mui/icons-material/SignalWifi4BarLock';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/Pause';
+// battery icon
+import battery from '../static/images/battery.png';
 
 function Navbar(props) {
-  const{playing, noty, notifyText, settingNoty} = props;
+  const{noty, notifyText, settingNotification} = props;
   
-  var stateId="";
+  // date 
   let dateFunc = new Date();
+  // hours
   let hour = dateFunc.getHours().toString();
+  // minutes
   let minute = dateFunc.getMinutes().toString();
+  // combining hours and minutes
   let time = hour+":"+minute;
+
+  // state for setting the current time
   const[currentTime, setCurrentTime] = useState(time);
 
   
@@ -22,46 +27,40 @@ function Navbar(props) {
     let hour = dateFunc.getHours().toString();
     let minute = dateFunc.getMinutes().toString();
     let time = hour+":"+minute;
-    console.log(time);
+    if(minute%60 < 10){
+      time = hour+":0"+minute;
+    }
+    
     setCurrentTime(time);
   }
 
+  // updating time after every 1 sec.
   setInterval(updateTime,1000);
 
-  useEffect(()=>{
-    if(noty===true){
-      return;
-    }
-    stateId = setInterval(updateTime,60000);
-  },[])
-
+// setting notification
   useEffect(()=>{
     if(noty===true){
       setTimeout(function(){
-        settingNoty();
+        settingNotification();
       },1000)
     }
   })
 
-  useEffect(()=>{
-    if(noty!==true){
-      clearInterval(stateId);
-    }
-  },[])
 
   return (
-    <div className='bar'>
-      {<h5 className='heading'>iPod
+    <div className='bar-container'>
+      {<h5 className='heading'>iPod js
       <SignalWifi4BarLockIcon style={{fontSize:17, marginLeft:4}}></SignalWifi4BarLockIcon></h5>}
+      {/* notification area */}
       {noty===true && <h5 className='notification'>{notifyText}</h5>}
+      {/* current time */}
       {noty===false && <h5 className='time'>{currentTime}</h5>}
+      {/* right area */}
       {<div className="right-nav-container">
-          {playing ? <h5 className='play-pause-nav'><PlayArrowIcon></PlayArrowIcon></h5>:
-           <h5 className='play-pause-nav'><PauseIcon style={{fontSize:13, marginTop:5}}></PauseIcon></h5>}
           <img className="battery" src={battery} alt="Battery"/>
       </div>}
     </div>
   )
 
-    }
+}
 export default Navbar;

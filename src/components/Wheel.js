@@ -1,10 +1,15 @@
+import React from 'react';
+
 import '../css/Wheel.css';
+// importing zingtouch for touch gestures
 import ZingTouch from 'zingtouch';
+
+// importing icons
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
-import React from 'react';
+
 
 class Wheel extends React.Component {
     constructor(){
@@ -14,47 +19,42 @@ class Wheel extends React.Component {
     
   render() {
     const{active, currentMenu, wheelColor, theme, menuChangeForward} = this.props;
-    return (
-        <div className='wheel-container' id="wheel-container">
 
-        <div style={{backgroundColor:wheelColor}}
-        className="wheel" id="wheel">
-            <div className='control' id='menu'>
-                <div style={{color:theme}}>
-                    MENU
-                </div>
-            </div>
+ return (
+<div className='wheel-container' id="wheel-container">
 
-            <div className='control' id='forward'>
-                <FastForwardIcon style={{color:theme}}></FastForwardIcon>
-            </div>
-
-            <div className='control' id="play-pause"> 
-                <PlayArrowIcon style={{color:theme, padding:'0'}}></PlayArrowIcon>
-                <PauseIcon style={{color:theme}}></PauseIcon>
-            </div>
-
-            <div className='control' id='backward'>
-                <FastRewindIcon style={{color:theme}}></FastRewindIcon>
-            </div>
+    <div style={{backgroundColor:wheelColor}} className="wheel" id="wheel">
+        <div className='control' id='menu'>
+            <div style={{color:theme}}>MENU</div>
         </div>
 
+        <div className='control' id='forward'>
+            <FastForwardIcon style={{color:theme}}></FastForwardIcon>
+        </div>
 
-        <div className='blank' id="blank" style={{backgroundColor:theme}} onClick={()=>{menuChangeForward(active, currentMenu)
-        }}></div>
+        <div className='control' id="play-pause"> 
+            <PlayArrowIcon style={{color:theme, padding:'0'}}></PlayArrowIcon>
+            <PauseIcon style={{color:theme}}></PauseIcon>
+        </div>
+
+        <div className='control' id='backward'>
+            <FastRewindIcon style={{color:theme}}></FastRewindIcon>
+        </div>
     </div>
+
+
+    <div className='blank' id="blank" style={{backgroundColor:theme}} onClick={()=>{menuChangeForward(active, currentMenu)}}></div>
+</div>
     )
   }
 
-  wheelControll = (event) => {
+//   controlling rotation
+  wheelControlling = (event) => {
         const{updateMenu, currentMenu} = this.props;
-    console.log(event.detail);
-    // if (event.detail.distanceFromOrigin === 0) {
-    //     this.angle = event.detail.angle;
-    // }
 
     if (Math.abs(this.angle - event.detail.angle) > 800) {
         this.angle = Math.abs(event.detail.angle);
+          // if no change in distance
         if (event.detail.distanceFromLast === 0) {
             return;
         }
@@ -67,6 +67,7 @@ class Wheel extends React.Component {
     } 
     else if (Math.abs(this.angle - event.detail.angle) > 12) {
         this.angle = Math.abs(event.detail.angle);
+        // if no change in distance
         if (event.detail.distanceFromLast === 0) {
             return;
         }
@@ -79,10 +80,11 @@ class Wheel extends React.Component {
     }
 }
 
-// binding components with zingtouch
+
 componentDidMount () {
     const{menuChangeBackward, fastForward, fastBackward, playPauseToggle} = this.props;
-    const wheelControll = this.wheelControll;
+
+    const wheelControll = this.wheelControlling;
     const wheel = document.getElementById("wheel");
     const activeRegion = ZingTouch.Region(wheel);
     const menuIcon = document.getElementById("menu");
@@ -90,12 +92,14 @@ componentDidMount () {
     const backward = document.getElementById("backward");
     const forward = document.getElementById("forward");
 
+// custom behaviour
     const longTapGesture = new ZingTouch.Tap({
-        maxDelay:100,
+        maxDelay:2000,
         numInputs: 1,
         tolerance: 1,
     })
 
+    // binding actions with functions
     activeRegion.bind(menuIcon, 'tap', function (event) {
         console.log("menu pressed")
         menuChangeBackward();

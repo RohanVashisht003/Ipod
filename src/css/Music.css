@@ -2,7 +2,15 @@
 .music{
     width: 270px;
     height: 100%;
-    background-color: #E3F2FD;
+    background-color: #e8e7e7;
+    overflow-y: scroll;
+}
+
+.music::-webkit-scrollbar{
+    display: none;
+}
+.music ul{
+   text-align: center;
 }
 
 /* heading for music */
@@ -12,5 +20,5 @@ h3{
 
 /* list element */
 .music #song1{
-    padding: 0px 0px;
+    padding: 8px 0px;
 }

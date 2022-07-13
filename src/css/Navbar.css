@@ -1,13 +1,12 @@
-.bar{
-    margin-top: -2px;
+/* main navbar container */
+.bar-container{
     display: flex;
     width: 270px;
     height: 22px;
-    min-height: 20px;
-    background-color: #E3F2FD;
-    border-bottom: 1px solid black;
-    /* position: absolute; */
+    /* min-height: 20px; */
+    background-color: #ededed;
 }
+
 
 .heading{
     margin: 1px 5px;
@@ -34,13 +33,6 @@
     margin-left: 15px;
 }
 
-.play-pause-nav{
-    color: orangered;
-    margin: 0px;
-    margin-right: 8px;
-    padding: 0px;
-    text-align: center;
-}
 
 .notification{
     color: black;
