@@ -19,6 +19,7 @@
     transition: all 0.2s;
     border: none;
     background: transparent;
+    font-size: 21px;
 }
 
 #rotate-btn:hover{

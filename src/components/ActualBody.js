@@ -2,7 +2,7 @@ import React from 'react';
 import '../css/ActualBody.css';
 import Display from './Display.js';
 import Wheel from './Wheel.js';
-import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import { BiRotateLeft } from "react-icons/bi";
 import $ from 'jquery';
 
 function ActualBody(props) {
@@ -24,7 +24,7 @@ function ActualBody(props) {
             />
             {/* rotate icon */}
             <button id={'rotate-btn'} onClick={rotatePod}>
-              <RotateLeftIcon />
+              <BiRotateLeft />
             </button>
                
             {/* wheel component */}

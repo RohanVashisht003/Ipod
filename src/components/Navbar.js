@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../css/Navbar.css';
 // wifi icon
-import SignalWifi4BarLockIcon from '@mui/icons-material/SignalWifi4BarLock';
+import { AiOutlineWifi } from "react-icons/ai";
 // battery icon
 import battery from '../static/images/battery.png';
 
@@ -50,7 +50,7 @@ function Navbar(props) {
   return (
     <div className='bar-container'>
       {<h5 className='heading'>iPod js
-      <SignalWifi4BarLockIcon style={{fontSize:17, marginLeft:4}}></SignalWifi4BarLockIcon></h5>}
+      <AiOutlineWifi style={{fontSize:17, marginLeft:4}}></AiOutlineWifi></h5>}
       {/* notification area */}
       {noty===true && <h5 className='notification'>{notifyText}</h5>}
       {/* current time */}

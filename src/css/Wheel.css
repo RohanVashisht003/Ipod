@@ -27,6 +27,7 @@
     color: rgb(210, 210, 210);
     position: absolute;
     transform: scale(1.2);
+    font-size: 21px;
 }
 
 /* menu */

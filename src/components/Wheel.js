@@ -5,10 +5,8 @@ import '../css/Wheel.css';
 import ZingTouch from 'zingtouch';
 
 // importing icons
-import FastForwardIcon from '@mui/icons-material/FastForward';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/Pause';
-import FastRewindIcon from '@mui/icons-material/FastRewind';
+import { AiFillFastForward,AiFillFastBackward } from "react-icons/ai";
+import {BsFillPlayFill,BsFillPauseFill} from "react-icons/bs";
 
 
 class Wheel extends React.Component {
@@ -29,16 +27,16 @@ class Wheel extends React.Component {
         </div>
 
         <div className='control' id='forward'>
-            <FastForwardIcon style={{color:theme}}></FastForwardIcon>
+            <AiFillFastForward style={{color:theme}}></AiFillFastForward>
         </div>
 
         <div className='control' id="play-pause"> 
-            <PlayArrowIcon style={{color:theme, padding:'0'}}></PlayArrowIcon>
-            <PauseIcon style={{color:theme}}></PauseIcon>
+            <BsFillPlayFill style={{color:theme, padding:'0'}}></BsFillPlayFill>
+            <BsFillPauseFill style={{color:theme}}></BsFillPauseFill>
         </div>
 
         <div className='control' id='backward'>
-            <FastRewindIcon style={{color:theme}}></FastRewindIcon>
+            <AiFillFastBackward style={{color:theme}}></AiFillFastBackward>
         </div>
     </div>
 
