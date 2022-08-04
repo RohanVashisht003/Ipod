@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Ipod/static/css/main.72f725ba.css",
-    "main.js": "/Ipod/static/js/main.f257f88e.js",
+    "main.css": "/Ipod/static/css/main.942e118f.css",
+    "main.js": "/Ipod/static/js/main.3c7cfa0c.js",
     "static/media/ShapeofYou.mp3": "/Ipod/static/media/ShapeofYou.b046dc8aa22ab85005ef.mp3",
     "static/media/InTheEnd.mp3": "/Ipod/static/media/InTheEnd.c6ad6b8a10a0c6a18851.mp3",
     "static/media/Fearless.mp3": "/Ipod/static/media/Fearless.746a45ad81ab23cb6da5.mp3",
@@ -25,11 +25,11 @@
     "static/media/in the end.jpg": "/Ipod/static/media/in the end.a45c90fc9bb6ae708160.jpg",
     "static/media/wallpaper3.jfif": "/Ipod/static/media/wallpaper3.66f41084ea72e419b5bb.jfif",
     "index.html": "/Ipod/index.html",
-    "main.72f725ba.css.map": "/Ipod/static/css/main.72f725ba.css.map",
-    "main.f257f88e.js.map": "/Ipod/static/js/main.f257f88e.js.map"
+    "main.942e118f.css.map": "/Ipod/static/css/main.942e118f.css.map",
+    "main.3c7cfa0c.js.map": "/Ipod/static/js/main.3c7cfa0c.js.map"
   },
   "entrypoints": [
-    "static/css/main.72f725ba.css",
-    "static/js/main.f257f88e.js"
+    "static/css/main.942e118f.css",
+    "static/js/main.3c7cfa0c.js"
   ]
 }
